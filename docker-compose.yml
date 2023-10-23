@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+
+  postgres:
+    image: "postgres:14.4"
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=stm-labs
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - /var/lib/postgresql/data
+
+  rest-api:
+    hostname: rest-api
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/stm-labs
+    depends_on:
+      - postgres
