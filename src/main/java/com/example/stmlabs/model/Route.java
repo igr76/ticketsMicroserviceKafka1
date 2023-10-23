@@ -1,51 +1,27 @@
 package com.example.stmlabs.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/** Cущность маршрут  */
+//@Getter
+//@Setter
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Entity
+//@Table(name = "routes")
 public class Route {
+//  @Id
+//  @GeneratedValue(strategy = GenerationType.IDENTITY)
+//  private long id;
+//  private String arrivalPoint;
+//  private String departurePoint;
+//  @OneToOne
+//  private Carrier carrier;
+//  private int durationInMinutes;
 
-  private long id;
-  private String arrivalPoint;
-  private String departurePoint;
-  private Carrier carrier;
-  private int durationInMinutes;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getArrivalPoint() {
-    return arrivalPoint;
-  }
-
-  public void setArrivalPoint(String arrivalPoint) {
-    this.arrivalPoint = arrivalPoint;
-  }
-
-  public String getDeparturePoint() {
-    return departurePoint;
-  }
-
-  public void setDeparturePoint(String departurePoint) {
-    this.departurePoint = departurePoint;
-  }
-
-  public Carrier getCarrier() {
-    return carrier;
-  }
-
-  public void setCarrier(Carrier carrier) {
-    this.carrier = carrier;
-  }
-
-  public int getDurationInMinutes() {
-    return durationInMinutes;
-  }
-
-  public void setDurationInMinutes(int durationInMinutes) {
-    this.durationInMinutes = durationInMinutes;
-  }
 
 }
