@@ -1,10 +1,9 @@
 package com.example.stmlabs.model;
 
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.*;
 
 /** Cущность пассажир  */
 @Getter
@@ -23,7 +22,9 @@ public class User {
   private String name;
   private String surname;
   private String patronymicName;
-
-
-
 }
+//{"login": "user1",
+//        "passwordHash": "user1",
+//        "name": "user1",
+//        "surname": "user1",
+//        "patronymicName": "user1"}

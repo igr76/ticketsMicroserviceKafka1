@@ -9,6 +9,6 @@
 <!--  <include file="table/create-carriers-table.xml" relativeToChangelogFile="true"/>-->
 <!--  <include file="table/create-routes-table.xml" relativeToChangelogFile="true"/>-->
 <!--  <include file="table/create-tickets-table.xml" relativeToChangelogFile="true"/>-->
-  <include file="table/insert-table-users.xml" relativeToChangelogFile="true"/>
+<!--  <include file="insert-user-table.sql" relativeToChangelogFile="true"/>-->
 
 </databaseChangeLog>
