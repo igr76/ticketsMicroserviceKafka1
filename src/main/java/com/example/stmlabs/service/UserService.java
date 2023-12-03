@@ -13,7 +13,7 @@ public interface UserService {
 
     void deleteUser(String login/*, Authentication authentication*/);
 
-    UserDto greaetUser(UserDto userDto/*, Authentication authentication*/);
+    UserDto greateUser(UserDto userDto/*, Authentication authentication*/);
 
     public Optional<User> getByLogin(@NonNull String login);
 }

@@ -2,6 +2,8 @@ package com.example.stmlabs.service.impl;
 
 
 import com.example.stmlabs.dto.UserDto;
+import com.example.stmlabs.exception.ElemNotFound;
+import com.example.stmlabs.mapper.UserMapper;
 import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.UserService;
@@ -13,25 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
-
-
 /**
  * Сервис пользователей
  */
-//@AllArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-  private final UserRepository userRepository;
-
-// private final UserMapper userMapper;
-
-
-
+  private  UserRepository userRepository;
+  private  UserMapper userMapper;
+  public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    this.userRepository = userRepository;
+    this.userMapper = userMapper;
+  }
 
   /**
    * Получить данные пользователя
@@ -39,17 +36,9 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto getUser(String login/*, Authentication authentication*/) {
     log.info("Получить данные пользователя" );
-    UserDto userDto = new UserDto();
     User user= new User();
-    user=userRepository.findByLogin( login).orElseThrow();
-    userDto.setName(user.getName());
-    userDto.setLogin(user.getLogin());
-    userDto.setPasswordHash(user.getPasswordHash());
-    userDto.setSurname(user.getSurname());
-    userDto.setPatronymicName(user.getPatronymicName());
-//    String nameEmail = authentication.getName();
-//    UserEntity userEntity = findEntityByEmail(nameEmail);
-    return userDto;
+    user=userRepository.findByLogin( login).orElseThrow(ElemNotFound::new);
+    return userMapper.toDTO(user);
   }
 
   /**
@@ -57,23 +46,28 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public UserDto updateUser(UserDto newUserDto/*, Authentication authentication*/) {
-    log.info("Получить данные пользователя");
-    return null;
+    log.info("Обновить данные пользователя");
+    User user= new User();
+    user= userRepository.findByLogin(newUserDto.getLogin()).orElseThrow(ElemNotFound::new);
+    user=userMapper.toEntity(newUserDto);
+    userRepository.save(user);
+    return newUserDto;
   }
 
   @Override
   public void deleteUser(String login/*, Authentication authentication*/) {
-
+    log.info("Удалить пользователя");
+    User user= new User();
+    user= userRepository.findByLogin(login).orElseThrow(ElemNotFound::new);
+    userRepository.delete(user);
   }
 
   @Override
-  public UserDto greaetUser(UserDto userDto/*, Authentication authentication*/) {
+  public UserDto greateUser(UserDto userDto/*, Authentication authentication*/) {
+    log.info("Создать пользователя");
     User user= new User();
-    user.setName(userDto.getName());
-    user.setLogin(userDto.getLogin());
-    user.setPasswordHash(userDto.getPasswordHash());
-    user.setSurname(userDto.getSurname());
-    user.setPatronymicName(userDto.getPatronymicName());
+    user= userRepository.findByLogin(userDto.getLogin()).orElseThrow(ElemNotFound::new);
+    user=userMapper.toEntity(userDto);
     userRepository.save(user);
     return userDto;
   }
