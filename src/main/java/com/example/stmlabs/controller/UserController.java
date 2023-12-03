@@ -9,18 +9,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/users")
 @Slf4j
-//@RequiredArgsConstructor
 @RestController
 public class UserController {
-
-
   private final UserService userService;
 
   public UserController(UserService userService) {
@@ -59,7 +55,7 @@ public class UserController {
           @RequestBody
           @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto/*, Authentication authentication*/) {
     log.info("controller создать пользователя");
-    return ResponseEntity.ok(userService.greaetUser(userDto));
+    return ResponseEntity.ok(userService.greateUser(userDto));
   }
   @Operation(summary = "Обновить пользователя")
   @ApiResponses({

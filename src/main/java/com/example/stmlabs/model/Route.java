@@ -7,21 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /** Cущность маршрут  */
-//@Getter
-//@Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Entity
-//@Table(name = "routes")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "routes")
 public class Route {
-//  @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
-//  private long id;
-//  private String arrivalPoint;
-//  private String departurePoint;
-//  @OneToOne
-//  private Carrier carrier;
-//  private int durationInMinutes;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+  private String arrivalPoint;
+  private String departurePoint;
+  @OneToOne
+  private Carrier carrier;
+  private int durationInMinutes;
 
 
 }
