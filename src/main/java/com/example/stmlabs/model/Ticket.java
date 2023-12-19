@@ -1,10 +1,8 @@
 package com.example.stmlabs.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 /** Cущность билет  */
@@ -12,17 +10,23 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "tickets")
 public class Ticket {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+   long id;
   @OneToOne
-  private Route route;
-  private LocalDateTime dateTime;
-  private int place;
-  private int cost;
-
-
+   Route route;
+   LocalDateTime dateTime;
+   int place;
+   int cost;
+   @ManyToOne
+   User user;
 }
+//{"id": 1,
+//        "dateTime": "20-02-2023 14:20:10",
+//        "place": 1,
+//        "cost": 1,
+//        "user": 1}

@@ -1,0 +1,20 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <changeSet id="insert-carriers-table" author="igor">
+        <insert tableName="carriers">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="yh"/>
+            <column name="phone" value="8222222"/>
+
+        </insert>
+        <insert tableName="carriers">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="rfd"/>
+            <column name="phone" value="83333333"/>
+
+        </insert>
+    </changeSet>
+</databaseChangeLog>

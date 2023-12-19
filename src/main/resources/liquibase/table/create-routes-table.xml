@@ -30,7 +30,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="routes" baseColumnNames="carrier_id" constraintName="routes_carrier_carriers_id" referencedTableName="carriers"
+        <addForeignKeyConstraint baseTableName="routes" baseColumnNames="carrier_id" constraintName="routes_carrier_carrier_id" referencedTableName="carriers"
                                  referencedColumnNames="id" onUpdate="CASCADE"/>
 
     </changeSet>

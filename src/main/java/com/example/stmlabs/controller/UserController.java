@@ -49,7 +49,6 @@ public class UserController {
           @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
           @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
   })
- // @PreAuthorize("hasAuthority('ADMIN')"+"|| 'user.login'")
   @PostMapping
   public ResponseEntity<UserDto> greaetUser(
           @RequestBody
@@ -66,7 +65,7 @@ public class UserController {
       @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
       @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
   })
- // @PreAuthorize("hasAuthority('ADMIN')"+"|| 'user.login'")
+  //@PreAuthorize("userDto.login == authentication.principal.username")
   @PatchMapping()
   public ResponseEntity<UserDto> updateUser(
           @RequestBody

@@ -27,10 +27,15 @@
                 <constraints nullable="false"/>
             </column>
             <column name="cost" type="INT">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="true"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="tickets" baseColumnNames="route_id" constraintName="tickets_route_routes_id" referencedTableName="routes"
+                                 referencedColumnNames="id" onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="tickets" baseColumnNames="user_id" constraintName="tickets_user_user_id" referencedTableName="users"
                                  referencedColumnNames="id" onUpdate="CASCADE"/>
 
     </changeSet>
