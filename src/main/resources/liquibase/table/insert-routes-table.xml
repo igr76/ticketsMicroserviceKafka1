@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <changeSet id="insert-routes-table" author="igor">
+        <insert tableName="routes">
+            <column name="id" valueNumeric="1"/>
+            <column name="arrival_point" value="jjjjj"/>
+            <column name="departure_point" value="jjj"/>
+            <column name="carrier_id" value="1"/>
+            <column name="duration_in_minutes" value="1"/>
+        </insert>
+        <insert tableName="routes">
+            <column name="id" valueNumeric="2"/>
+            <column name="arrival_point" value="nnnn"/>
+            <column name="departure_point" value="nnn"/>
+            <column name="carrier_id" value="2"/>
+            <column name="duration_in_minutes" value="2"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -15,5 +15,4 @@ public interface UserService {
 
     UserDto greateUser(UserDto userDto/*, Authentication authentication*/);
 
-    public Optional<User> getByLogin(@NonNull String login);
 }

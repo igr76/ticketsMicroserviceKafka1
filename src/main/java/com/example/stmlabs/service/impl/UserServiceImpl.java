@@ -37,7 +37,8 @@ public class UserServiceImpl implements UserService {
   public UserDto getUser(String login/*, Authentication authentication*/) {
     log.info("Получить данные пользователя" );
     User user= new User();
-    user=userRepository.findByLogin( login).orElseThrow(ElemNotFound::new);
+    user=userRepository.findByLogin( login).orElseThrow(()->
+            new ElemNotFound("Такого пользователя не существует"));
     return userMapper.toDTO(user);
   }
 
@@ -47,35 +48,31 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto updateUser(UserDto newUserDto/*, Authentication authentication*/) {
     log.info("Обновить данные пользователя");
-    User user= new User();
-    user= userRepository.findByLogin(newUserDto.getLogin()).orElseThrow(ElemNotFound::new);
-    user=userMapper.toEntity(newUserDto);
-    userRepository.save(user);
+    if (userRepository.findByLogin(newUserDto.getLogin()).isEmpty()) {
+      throw  new ElemNotFound("Такого пользователя не существует");
+    }else userRepository.save(userMapper.toEntity(newUserDto));
     return newUserDto;
   }
 
   @Override
-  public void deleteUser(String login/*, Authentication authentication*/) {
+  public void deleteUser(String login) {
     log.info("Удалить пользователя");
     User user= new User();
-    user= userRepository.findByLogin(login).orElseThrow(ElemNotFound::new);
+    user= userRepository.findByLogin(login).orElseThrow(()->
+            new ElemNotFound("Такого пользователя не существует"));
     userRepository.delete(user);
   }
 
   @Override
-  public UserDto greateUser(UserDto userDto/*, Authentication authentication*/) {
+  public UserDto greateUser(UserDto userDto) {
     log.info("Создать пользователя");
-    User user= new User();
-    user= userRepository.findByLogin(userDto.getLogin()).orElseThrow(ElemNotFound::new);
-    user=userMapper.toEntity(userDto);
-    userRepository.save(user);
+    if (!userRepository.findByLogin(userDto.getLogin()).isEmpty()) {
+      throw new UnsupportedOperationException("Такой пользователь уже существует");
+    }else userRepository.save(userMapper.toEntity(userDto));
     return userDto;
   }
 
-  @Override
-  public Optional<User> getByLogin(@NonNull String login) {
-    return null;
-  }
+
 
 
 }
