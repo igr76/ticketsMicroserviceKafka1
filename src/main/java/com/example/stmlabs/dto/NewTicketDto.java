@@ -15,4 +15,5 @@ public class NewTicketDto {
     LocalDateTime dateTime;
     int place;
     int cost;
+    int user;
 }

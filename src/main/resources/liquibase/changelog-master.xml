@@ -12,6 +12,7 @@
   <include file="table/insert-users-table.xml" relativeToChangelogFile="true"/>
   <include file="table/insert-carriers-table.xml" relativeToChangelogFile="true"/>
   <include file="table/insert-routes-table.xml" relativeToChangelogFile="true"/>
+  <include file="table/insert-tickets-table.xml" relativeToChangelogFile="true"/>
 
 
 </databaseChangeLog>

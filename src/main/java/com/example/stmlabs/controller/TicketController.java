@@ -1,5 +1,6 @@
 package com.example.stmlabs.controller;
 
+import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.dto.UserDto;
 import com.example.stmlabs.model.Ticket;
@@ -94,9 +95,9 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<TicketDto> greatTicket(
             @RequestBody
-            @NotBlank(message = "пользователь не должен быть пустым") TicketDto ticketDto/*, Authentication authentication*/) {
+            @NotBlank(message = "пользователь не должен быть пустым") NewTicketDto newTicketDto/*, Authentication authentication*/) {
         log.info("controller создать билет");
-        return ResponseEntity.ok(ticketService.greatTicket(ticketDto));
+        return ResponseEntity.ok(ticketService.greatTicket(newTicketDto));
     }
     @Operation(summary = "Удалить билет")
     @ApiResponses({

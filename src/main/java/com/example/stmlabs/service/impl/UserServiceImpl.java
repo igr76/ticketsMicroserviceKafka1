@@ -7,13 +7,7 @@ import com.example.stmlabs.mapper.UserMapper;
 import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 /**
@@ -72,7 +66,10 @@ public class UserServiceImpl implements UserService {
     return userDto;
   }
 
-
+  @Override
+  public Optional<User> getUserByLogin(String login) {
+    return userRepository.findByLogin(login);
+  }
 
 
 }

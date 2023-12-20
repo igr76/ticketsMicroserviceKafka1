@@ -1,5 +1,6 @@
 package com.example.stmlabs;
 
+import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.mapper.TicketMapper;
 import com.example.stmlabs.model.Ticket;
@@ -32,6 +33,7 @@ public class TicketServiceTest {
 
     @Test
     void getAllTickets() {
+        int offset=1;int limit=1;
         List<TicketDto> ticketDtoList = new ArrayList<>();
         ticketDtoList.add(getTicketDto());
         List<Ticket> ticketList=new ArrayList<>();
@@ -50,9 +52,11 @@ public class TicketServiceTest {
     @Test
     void greatTicket() {
         TicketDto ticketDto =getTicketDto();Ticket ticket=getTicket();
-        when(ticketMapper.toEntity(any())).thenReturn(ticket);
-      //  when(ticketRepository.save(any())).thenReturn(ticketDto);
-        assertThat(ticketService.greatTicket(ticketDto)).isEqualTo(ticketDto);
+        NewTicketDto newTicketDto= new NewTicketDto(1,
+                LocalDateTime.of(2023,01,12,2,23),1,1,0);
+        when(ticketMapper.toEntityISNew(any())).thenReturn(ticket);
+        when(ticketMapper.toDTO(any())).thenReturn(ticketDto);
+        assertThat(ticketService.greatTicket(newTicketDto)).isEqualTo(ticketDto);
         verify(ticketRepository, times(1)).save(any());
 
     }
@@ -66,7 +70,7 @@ public class TicketServiceTest {
 
     TicketDto getTicketDto() {
         TicketDto ticketDto= new TicketDto(1,1,
-                LocalDateTime.of(2023,01,12,2,23),1,1);
+                "20-02-2023 14:20:10",1,1,0);
         return ticketDto;
     }
 

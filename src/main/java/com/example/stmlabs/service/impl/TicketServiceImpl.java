@@ -1,5 +1,6 @@
 package com.example.stmlabs.service.impl;
 
+import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.exception.ElemNotFound;
 import com.example.stmlabs.mapper.TicketMapper;
@@ -50,9 +51,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketDto greatTicket(TicketDto ticketDto) {
-         ticketRepository.save(ticketMapper.toEntity(ticketDto));
-        return ticketDto;
+    public TicketDto greatTicket(NewTicketDto newTicketDto) {
+        return ticketMapper.toDTO(ticketRepository.save(ticketMapper.toEntityISNew(newTicketDto)));
     }
 
     @Override
