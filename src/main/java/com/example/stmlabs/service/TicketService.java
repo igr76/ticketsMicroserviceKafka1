@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TicketService {
     List<TicketDto> getAllTickets(PageRequest pageRequest);
-    List<TicketDto> getAllTicketsChoose(LocalDateTime date,String arrivalPoint,
+    List<TicketDto> getAllTicketsChoose(String date,String arrivalPoint,
                                         String departurePoints,String carrier,int limit,int offset);
     List<TicketDto> getAllMyTickets();
     void buyTicket(long id,String login);

@@ -9,11 +9,16 @@ import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.TicketRepository;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.TicketService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+@Slf4j
 @Service
 public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
@@ -27,13 +32,27 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketDto> getAllTickets(PageRequest pageRequest) {
+        log.info("Service Получить  все билеты");
         return ticketMapper.toListDto(ticketRepository.findAllByUserNull());
     }
 
     @Override
-    public List<TicketDto> getAllTicketsChoose(LocalDateTime date,String arrivalPoint, String departurePoints,
+    public List<TicketDto> getAllTicketsChoose(String stringDate,String arrivalPoint, String departurePoints,
                                                String carrier,int limit,int offset) {
-       List<Ticket> ticketList= ticketRepository.getAllTicketsChoose(date,arrivalPoint,departurePoints,carrier,limit,offset);
+        if (arrivalPoint == null  && departurePoints == null){ throw  new ElemNotFound("Укажите станцию");}
+        List<Ticket> ticketList= new ArrayList<>();
+        LocalDate date = LocalDate.parse(stringDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        if (arrivalPoint == null  && carrier == null) {
+            ticketList = ticketRepository.getAllTicketsChooseOfDeparturePoints(date,departurePoints,limit,offset);
+            return ticketMapper.toListDto(ticketList);
+        }else if (departurePoints == null  && carrier == null) {
+            ticketList = ticketRepository.getAllTicketsChooseOfArrivalPoint(date,arrivalPoint,limit,offset);
+            return ticketMapper.toListDto(ticketList);
+        }else if ( carrier == null) {
+            ticketList = ticketRepository.getAllTicketsChooseNoCarrier(date,arrivalPoint,departurePoints,limit,offset);
+            return ticketMapper.toListDto(ticketList);
+        }
+        ticketList = ticketRepository.getAllTicketsChoose(date,arrivalPoint,departurePoints,carrier,limit,offset);
         return ticketMapper.toListDto(ticketList);
     }
 

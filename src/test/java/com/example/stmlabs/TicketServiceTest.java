@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class TicketServiceTest {
     void greatTicket() {
         TicketDto ticketDto =getTicketDto();Ticket ticket=getTicket();
         NewTicketDto newTicketDto= new NewTicketDto(1,
-                LocalDateTime.of(2023,01,12,2,23),1,1,0);
+                "20-02-2023 ",1,1,0);
         when(ticketMapper.toEntityISNew(any())).thenReturn(ticket);
         when(ticketMapper.toDTO(any())).thenReturn(ticketDto);
         assertThat(ticketService.greatTicket(newTicketDto)).isEqualTo(ticketDto);
@@ -70,12 +71,12 @@ public class TicketServiceTest {
 
     TicketDto getTicketDto() {
         TicketDto ticketDto= new TicketDto(1,1,
-                "20-02-2023 14:20:10",1,1,0);
+                "20-02-2023 ",1,1,0);
         return ticketDto;
     }
 
     Ticket getTicket() {
-        Ticket ticket = new Ticket(1,null,LocalDateTime.of(2023,01,12,2,23)
+        Ticket ticket = new Ticket(1,null,LocalDate.of(2023,01,12)
                 ,1,1,null);
         return ticket;
     }

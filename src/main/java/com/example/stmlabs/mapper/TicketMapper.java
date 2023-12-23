@@ -14,17 +14,17 @@ import java.util.List;
 public interface TicketMapper {
     @Mapping(target = "route.id", source = "route")
     @Mapping(target = "user.id", source = "user")
-    @Mapping(target = "dateTime", source = "dateTime", dateFormat = "dd-MM-yyyy HH:mm:ss")
+    @Mapping(target = "dateTime", source = "dateTime", dateFormat = "dd-MM-yyyy")
     Ticket toEntity(TicketDto ticketDto);
     @Mapping(target = "route.id", source = "route")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user.id", source = "user")
-    @Mapping(target = "dateTime", source = "dateTime", dateFormat = "dd-MM-yyyy HH:mm:ss")
+    @Mapping(target = "dateTime", source = "dateTime", dateFormat = "dd-MM-yyyy")
     Ticket toEntityISNew(NewTicketDto newTicketDto);
 
     @Mapping(target = "route", source = "route.id")
     @Mapping(target = "user", source = "user.id")
-    @Mapping(target = "dateTime", source = "dateTime", dateFormat = "dd-MM-yyyy HH:mm:ss")
+    @Mapping(target = "dateTime", source = "dateTime", dateFormat = "dd-MM-yyyy")
     TicketDto toDTO(Ticket ticket);
     List<TicketDto> toListDto(List<Ticket> ticketList);
 }

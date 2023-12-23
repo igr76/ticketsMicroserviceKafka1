@@ -2,12 +2,14 @@ package com.example.stmlabs.service.impl;
 
 
 import com.example.stmlabs.dto.UserDto;
+import com.example.stmlabs.exception.AuthException;
 import com.example.stmlabs.exception.ElemNotFound;
 import com.example.stmlabs.mapper.UserMapper;
 import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 /**
@@ -28,8 +30,11 @@ public class UserServiceImpl implements UserService {
    * Получить данные пользователя
    */
   @Override
-  public UserDto getUser(String login/*, Authentication authentication*/) {
+  public UserDto getUser(String login, Authentication authentication) {
     log.info("Получить данные пользователя" );
+    if (!checkAuthor(login, authentication)) {
+      throw new AuthException("Вы не можете получать чужую запись");
+    }
     User user= new User();
     user=userRepository.findByLogin( login).orElseThrow(()->
             new ElemNotFound("Такого пользователя не существует"));
@@ -40,8 +45,11 @@ public class UserServiceImpl implements UserService {
    * Обновить данные пользователя
    */
   @Override
-  public UserDto updateUser(UserDto newUserDto/*, Authentication authentication*/) {
+  public UserDto updateUser(UserDto newUserDto, Authentication authentication) {
     log.info("Обновить данные пользователя");
+    if (!checkAuthor(newUserDto.getLogin(), authentication)) {
+      throw new AuthException("Вы не можете менять чужую запись");
+    }
     if (userRepository.findByLogin(newUserDto.getLogin()).isEmpty()) {
       throw  new ElemNotFound("Такого пользователя не существует");
     }else userRepository.save(userMapper.toEntity(newUserDto));
@@ -49,8 +57,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void deleteUser(String login) {
+  public void deleteUser(String login, Authentication authentication) {
     log.info("Удалить пользователя");
+    if (!checkAuthor(login, authentication)) {
+      throw new AuthException("Вы не можете менять чужую запись");
+    }
     User user= new User();
     user= userRepository.findByLogin(login).orElseThrow(()->
             new ElemNotFound("Такого пользователя не существует"));
@@ -58,8 +69,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto greateUser(UserDto userDto) {
+  public UserDto greateUser(UserDto userDto, Authentication authentication) {
     log.info("Создать пользователя");
+    if (!checkAuthor(userDto.getLogin(), authentication)) {
+      throw new AuthException("Вы не можете менять чужую запись");
+    }
     if (!userRepository.findByLogin(userDto.getLogin()).isEmpty()) {
       throw new UnsupportedOperationException("Такой пользователь уже существует");
     }else userRepository.save(userMapper.toEntity(userDto));
@@ -71,5 +85,8 @@ public class UserServiceImpl implements UserService {
     return userRepository.findByLogin(login);
   }
 
-
+  public boolean checkAuthor(String login, Authentication authentication) {
+    if (userRepository.findByLogin(login).get().getLogin()== authentication.getName()) {return  true;
+    }else return false;
+  }
 }

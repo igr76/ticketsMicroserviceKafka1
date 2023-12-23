@@ -33,6 +33,7 @@ public class WebSecurityConfig {
             .cors(c->c.disable())
             .authorizeRequests(auth -> auth
                     .requestMatchers("/users").authenticated()
+                    .requestMatchers("/users/**").authenticated()
                     .requestMatchers("/ticket/allMy").authenticated()
                     .requestMatchers(HttpMethod.PUT,"/ticket").authenticated()
                     .requestMatchers(HttpMethod.DELETE,"/ticket").authenticated()

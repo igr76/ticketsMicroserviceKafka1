@@ -7,7 +7,7 @@
         <insert tableName="tickets">
             <column name="id" valueNumeric="1"/>
             <column name="route_id" value="1"/>
-            <column name="date_time" value="20-02-2023 14:20:10"/>
+            <column name="date_time" value="20-02-2023 "/>
             <column name="place" value="1"/>
             <column name="cost" value="1"/>
             <column name="user_id" value="1"/>
