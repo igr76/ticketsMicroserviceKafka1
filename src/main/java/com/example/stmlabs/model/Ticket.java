@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 /** Cущность билет  */
 @Getter
@@ -19,14 +20,14 @@ public class Ticket {
    long id;
   @OneToOne
    Route route;
-   LocalDateTime dateTime;
+   LocalDate dateTime;
    int place;
    int cost;
    @ManyToOne
    User user;
 }
 //{"id": 1,
-//        "dateTime": "20-02-2023 14:20:10",
+//        "dateTime": "20-02-2023 ",
 //        "place": 1,
 //        "cost": 1,
 //        "user": 1}

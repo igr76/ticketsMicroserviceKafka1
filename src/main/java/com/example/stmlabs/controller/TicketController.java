@@ -1,5 +1,6 @@
 package com.example.stmlabs.controller;
 
+import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.dto.UserDto;
 import com.example.stmlabs.model.Ticket;
@@ -31,7 +32,7 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    @Operation(summary = "Получить билет")
+    @Operation(summary = "Получить билеты")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(
                     array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
@@ -40,10 +41,10 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
-    @GetMapping(value = "/all/{offset}/{limit}")
+    @GetMapping(value = "/all")
     public ResponseEntity<List<TicketDto>> getAllTickets(@RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
                                                          @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) Integer limit) {
-        log.info("controller Получить билет");
+        log.info("controller Получить все  билет");
         return ResponseEntity.ok(ticketService.getAllTickets(PageRequest.of(offset,limit)));
     }
     @Operation(summary = "Получить билет")
@@ -55,15 +56,15 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
-    @GetMapping(value = "/{date}/{arrivalPoint}/{departurePoints}/{carrier}")
-    public ResponseEntity<List<TicketDto>> getAllTicketsChoose(@PathVariable(name = "date")
+    @GetMapping(value = "/allChoose")
+    public ResponseEntity<List<TicketDto>> getAllTicketsChoose(@RequestParam(name = "date")
                                                                    @NotBlank(message = "дата не должна быть пустой")
-                                                                   LocalDateTime date,
-                                                               @PathVariable(name = "arrivalPoint") String arrivalPoint,
-                                                               @PathVariable(name = "departurePoints") String departurePoints,
-                                                               @PathVariable(name = "carrier") String carrier,
-                                                               @RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
-                                                               @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) Integer limit) {
+                                                                   String date,
+                                                               @RequestParam(name = "arrivalPoint",required = false) String arrivalPoint,
+                                                               @RequestParam(name = "departurePoints",required = false) String departurePoints,
+                                                               @RequestParam(name = "carrier",required = false) String carrier,
+                                                               @RequestParam(name = "offset", defaultValue = "0") @Min(0) Integer offset,
+                                                               @RequestParam(name = "limit", defaultValue = "20") @Min(1) @Max(100) Integer limit) {
         log.info("controller Получить билет");
         return ResponseEntity.ok(ticketService.getAllTicketsChoose(date,arrivalPoint,departurePoints,carrier,limit,offset));
     }
@@ -90,13 +91,12 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
-    // @PreAuthorize("hasAuthority('ADMIN')"+"|| 'user.login'")
     @PostMapping
     public ResponseEntity<TicketDto> greatTicket(
             @RequestBody
-            @NotBlank(message = "пользователь не должен быть пустым") TicketDto ticketDto/*, Authentication authentication*/) {
+            @NotBlank(message = "пользователь не должен быть пустым") NewTicketDto newTicketDto/*, Authentication authentication*/) {
         log.info("controller создать билет");
-        return ResponseEntity.ok(ticketService.greatTicket(ticketDto));
+        return ResponseEntity.ok(ticketService.greatTicket(newTicketDto));
     }
     @Operation(summary = "Удалить билет")
     @ApiResponses({
@@ -107,7 +107,6 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
-    //@PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteTicket(  @RequestBody
                                    @NotBlank(message = "пользователь не должен быть пустым")long id/*, Authentication authentication*/) {

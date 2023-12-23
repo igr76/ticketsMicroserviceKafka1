@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewTicketDto {
     long route;
-    LocalDateTime dateTime;
+    String dateTime;
     int place;
     int cost;
+    int user;
 }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/users")
@@ -36,9 +37,9 @@ public class UserController {
   //@PreAuthorize("hasAuthority('ADMIN')"+"|| 'user.login'")
   @GetMapping(value = "/{login}")
   public ResponseEntity<UserDto> getUser(@PathVariable(name = "login")
-                                           @NotBlank(message = "ad_pk не должен быть пустым") String login/*, Authentication authentication*/) {
+                                           @NotBlank(message = "ad_pk не должен быть пустым") String login, Authentication authentication) {
     log.info("controller Получить пользователя");
-    return ResponseEntity.ok(userService.getUser(login));
+    return ResponseEntity.ok(userService.getUser(login,authentication));
   }
   @Operation(summary = "Создать пользователя")
   @ApiResponses({
@@ -52,9 +53,9 @@ public class UserController {
   @PostMapping
   public ResponseEntity<UserDto> greaetUser(
           @RequestBody
-          @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto/*, Authentication authentication*/) {
+          @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto, Authentication authentication) {
     log.info("controller создать пользователя");
-    return ResponseEntity.ok(userService.greateUser(userDto));
+    return ResponseEntity.ok(userService.greateUser(userDto,authentication));
   }
   @Operation(summary = "Обновить пользователя")
   @ApiResponses({
@@ -69,9 +70,9 @@ public class UserController {
   @PatchMapping()
   public ResponseEntity<UserDto> updateUser(
           @RequestBody
-      @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto/*, Authentication authentication*/) {
+      @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto, Authentication authentication) {
     log.info("controller Обновить пользователя");
-    return ResponseEntity.ok(userService.updateUser(userDto));
+    return ResponseEntity.ok(userService.updateUser(userDto,authentication));
   }
     @Operation(summary = "Удалить пользователя")
     @ApiResponses({
@@ -85,9 +86,9 @@ public class UserController {
     //@PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{login}")
     public void deleteUser(@PathVariable(name = "login")
-                               @NotBlank(message = "логин не должен быть пустым") String login/*, Authentication authentication*/) {
+                               @NotBlank(message = "логин не должен быть пустым") String login, Authentication authentication) {
         log.info("controller Удалить пользователя");
-         userService.deleteUser(login);
+         userService.deleteUser(login,authentication);
     }
 
 

@@ -34,13 +34,13 @@ public class UserServiceTest {
 
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
         when(userMapper.toDTO(any())).thenReturn(userDto);
-        assertThat(userService.getUser(any())).isEqualTo(userDto);
+        assertThat(userService.getUser(any(),any())).isEqualTo(userDto);
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void getUserTestNegative() {
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(null));
-        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.getUser("name"));
+        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.getUser("name",null));
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
@@ -48,43 +48,43 @@ public class UserServiceTest {
         User user = getUser();UserDto userDto = getUserDto();
 
         //  when(userRepository.findByLogin(any())).thenReturn(null);
-        assertThat(userService.greateUser(userDto)).isEqualTo(userDto);
-        verify(userRepository, times(1)).findByLoginIsNot(any());
+        assertThat(userService.greateUser(userDto,null)).isEqualTo(userDto);
+        verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void greateUserTestNegative() {
-        when(userRepository.findByLoginIsNot(any())).thenReturn(true);
-        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userService.greateUser(getUserDto()));
-        verify(userRepository, times(1)).findByLoginIsNot(any());
+        when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(getUser()));
+        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userService.greateUser(getUserDto(),null));
+        verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void updateUserTest() {
         User user = getUser();UserDto userDto = getUserDto();
 
-        when(userRepository.findByLoginIsNot(any())).thenReturn(false);
+        when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
         when(userMapper.toEntity(any())).thenReturn(user);
         when(userRepository.save(any())).thenReturn(user);
-        assertThat(userService.updateUser(userDto)).isEqualTo(userDto);
-        verify(userRepository, times(1)).findByLoginIsNot(any());
+        assertThat(userService.updateUser(userDto,null)).isEqualTo(userDto);
+        verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void updateUserTestNegative() {
-        when(userRepository.findByLoginIsNot(any())).thenReturn(true);
-        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.updateUser(getUserDto()));
-        verify(userRepository, times(1)).findByLoginIsNot(any());
+        when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(null));
+        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.updateUser(getUserDto(),null));
+        verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void deleteUserTest() {
         User user = getUser();
 
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
-        userService.deleteUser("login");;
+        userService.deleteUser("login",null);;
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void deleteUserTestNegative() {
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(null));
-        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.deleteUser("name"));
+        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.deleteUser("name",null));
         verify(userRepository, times(1)).findByLogin(any());
     }
 

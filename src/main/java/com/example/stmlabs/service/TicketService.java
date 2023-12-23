@@ -1,5 +1,6 @@
 package com.example.stmlabs.service;
 
+import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import org.springframework.data.domain.PageRequest;
 
@@ -8,11 +9,11 @@ import java.util.List;
 
 public interface TicketService {
     List<TicketDto> getAllTickets(PageRequest pageRequest);
-    List<TicketDto> getAllTicketsChoose(LocalDateTime date,String arrivalPoint,
+    List<TicketDto> getAllTicketsChoose(String date,String arrivalPoint,
                                         String departurePoints,String carrier,int limit,int offset);
     List<TicketDto> getAllMyTickets();
     void buyTicket(long id,String login);
-    TicketDto greatTicket(TicketDto ticketDto);
+    TicketDto greatTicket(NewTicketDto newTicketDto);
     void deleteTicket(long id);
 
 }
