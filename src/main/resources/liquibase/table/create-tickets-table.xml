@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="create-tickets-table" author="Igor Gritsuk">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="tickets"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="tickets">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="route_id" type="BIGINT">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="date_time" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="place" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tickets" baseColumnNames="route_id" constraintName="tickets_route_routes_id" referencedTableName="routes"
+                                 referencedColumnNames="id" onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="tickets" baseColumnNames="user_id" constraintName="tickets_user_user_id" referencedTableName="users"
+                                 referencedColumnNames="id" onUpdate="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>

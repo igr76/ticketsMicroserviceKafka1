@@ -1,53 +1,33 @@
 package com.example.stmlabs.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+/** Cущность билет  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "tickets")
 public class Ticket {
-
-  private long id;
-  private Route route;
-  private LocalDateTime dateTime;
-  private int place;
-  private int cost;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public Route getRoute() {
-    return route;
-  }
-
-  public void setRoute(Route route) {
-    this.route = route;
-  }
-
-  public LocalDateTime getDateTime() {
-    return dateTime;
-  }
-
-  public void setDateTime(LocalDateTime dateTime) {
-    this.dateTime = dateTime;
-  }
-
-  public int getPlace() {
-    return place;
-  }
-
-  public void setPlace(int place) {
-    this.place = place;
-  }
-
-  public int getCost() {
-    return cost;
-  }
-
-  public void setCost(int cost) {
-    this.cost = cost;
-  }
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+   long id;
+  @OneToOne
+   Route route;
+   LocalDate dateTime;
+   int place;
+   int cost;
+   @ManyToOne
+   User user;
 }
+//{"id": 1,
+//        "dateTime": "20-02-2023 ",
+//        "place": 1,
+//        "cost": 1,
+//        "user": 1}
