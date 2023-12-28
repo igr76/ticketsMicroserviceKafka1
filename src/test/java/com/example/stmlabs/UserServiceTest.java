@@ -1,5 +1,6 @@
 package com.example.stmlabs;
 
+import com.example.stmlabs.dto.Role;
 import com.example.stmlabs.dto.UserDto;
 import com.example.stmlabs.exception.ElemNotFound;
 import com.example.stmlabs.mapper.UserMapper;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import java.util.Optional;
 
@@ -31,60 +34,84 @@ public class UserServiceTest {
     @Test
     void getUserTest() {
         User user = getUser();UserDto userDto = getUserDto();
-
-        when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLogin("login")).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userMapper.toDTO(any())).thenReturn(userDto);
-        assertThat(userService.getUser(any(),any())).isEqualTo(userDto);
+        assertThat(userService.getUser("login",authentication)).isEqualTo(userDto);
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void getUserTestNegative() {
+        UserDto userDto = getUserDto();
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(null));
-        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.getUser("name",null));
+        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.getUser("login",authentication));
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void greateUserTest() {
         User user = getUser();UserDto userDto = getUserDto();
-
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         //  when(userRepository.findByLogin(any())).thenReturn(null);
-        assertThat(userService.greateUser(userDto,null)).isEqualTo(userDto);
+        assertThat(userService.greateUser(userDto,authentication)).isEqualTo(userDto);
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void greateUserTestNegative() {
+        UserDto userDto = getUserDto();
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(getUser()));
-        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userService.greateUser(getUserDto(),null));
+        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> userService.greateUser(userDto,authentication));
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void updateUserTest() {
         User user = getUser();UserDto userDto = getUserDto();
-
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
         when(userMapper.toEntity(any())).thenReturn(user);
         when(userRepository.save(any())).thenReturn(user);
-        assertThat(userService.updateUser(userDto,null)).isEqualTo(userDto);
+        assertThat(userService.updateUser(userDto,authentication)).isEqualTo(userDto);
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void updateUserTestNegative() {
+        UserDto userDto = getUserDto();
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(null));
-        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.updateUser(getUserDto(),null));
+        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.updateUser(userDto,authentication));
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void deleteUserTest() {
-        User user = getUser();
-
+        User user = getUser();UserDto userDto = getUserDto();
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
-        userService.deleteUser("login",null);;
+        userService.deleteUser("login",authentication);;
         verify(userRepository, times(1)).findByLogin(any());
     }
     @Test
     void deleteUserTestNegative() {
+        UserDto userDto = getUserDto();
+        Authentication authentication = new TestingAuthenticationToken(userDto.getLogin(), userDto.getPasswordHash(), String.valueOf(Role.USER));
+        authentication.setAuthenticated(true);
+        when(userRepository.findByLoginIsFalse(anyString())).thenReturn(false);
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(null));
-        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.deleteUser("name",null));
+        assertThatExceptionOfType(ElemNotFound.class).isThrownBy(() -> userService.deleteUser("login",authentication));
         verify(userRepository, times(1)).findByLogin(any());
     }
 

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
   public UserDto getUser(String login, Authentication authentication) {
     log.info("Получить данные пользователя" );
     if (!checkAuthor(login, authentication)) {
-      throw new AuthException("Вы не можете получать чужую запись");
+       throw new AuthException("Вы не можете получать чужую запись");
     }
     User user= new User();
     user=userRepository.findByLogin( login).orElseThrow(()->
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
   }
 
   public boolean checkAuthor(String login, Authentication authentication) {
-    if (userRepository.findByLogin(login).get().getLogin()== authentication.getName()) {return  true;
+    if (!userRepository.findByLoginIsFalse(login) && login== authentication.getName()) {return  true;
     }else return false;
   }
 }

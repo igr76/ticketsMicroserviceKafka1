@@ -11,8 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewTicketDto {
+    @NonNull
     long route;
+    @NonNull
     String dateTime;
+    @NonNull
     int place;
     int cost;
     int user;

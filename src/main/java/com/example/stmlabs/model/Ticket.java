@@ -23,7 +23,7 @@ public class Ticket {
    LocalDate dateTime;
    int place;
    int cost;
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.EAGER)
    User user;
 }
 //{"id": 1,
