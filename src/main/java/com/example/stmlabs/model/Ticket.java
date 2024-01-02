@@ -26,8 +26,4 @@ public class Ticket {
    @ManyToOne(fetch = FetchType.EAGER)
    User user;
 }
-//{"id": 1,
-//        "dateTime": "20-02-2023 ",
-//        "place": 1,
-//        "cost": 1,
-//        "user": 1}
+
