@@ -19,7 +19,7 @@ public class Route {
   private long id;
   private String arrivalPoint;
   private String departurePoint;
-  @OneToOne
+  @OneToOne(fetch = FetchType.EAGER)
   private Carrier carrier;
   private int durationInMinutes;
 
