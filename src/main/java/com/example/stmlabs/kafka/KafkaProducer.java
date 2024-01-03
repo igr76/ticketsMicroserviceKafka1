@@ -2,6 +2,7 @@ package com.example.stmlabs.kafka;
 
 import com.example.stmlabs.model.Ticket;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 @Slf4j
@@ -10,7 +11,7 @@ public class KafkaProducer {
     private final String topic;
     private final KafkaTemplate<String, Ticket> kafkaTemplate;
 
-    public KafkaProducer(String topic, KafkaTemplate<String, Ticket> kafkaTemplate) {
+    public KafkaProducer(@Value("${application.kafka.topic}")String topic, KafkaTemplate<String, Ticket> kafkaTemplate) {
         this.topic = topic;
         this.kafkaTemplate = kafkaTemplate;
     }

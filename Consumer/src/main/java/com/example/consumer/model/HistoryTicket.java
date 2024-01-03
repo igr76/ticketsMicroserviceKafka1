@@ -18,15 +18,16 @@ import java.time.LocalDate;
 @Table(name = "histurytickets")
 public class HistoryTicket {
   @Id
-  long id;
+   long id;
+  /**  маршрут  */
     long route;
+  /** Дата билета  */
     String dateTime;
+    /** Номер места  */
     int place;
+     /** Стоимость билета  */
     int cost;
+   /** Владелец  билета  */
     int user;
 }
-//{"id": 1,
-//        "dateTime": "20-02-2023 ",
-//        "place": 1,
-//        "cost": 1,
-//        "user": 1}
+

@@ -17,10 +17,15 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+  /** Логин пассажира  */
   private String login;
+  /** Пароль пассажира  */
   private String passwordHash;
+  /** Имя пассажира  */
   private String name;
+  /** Фамилия пассажира  */
   private String surname;
+  /** Отчество пассажира  */
   private String patronymicName;
 }
 //{"login": "user1",

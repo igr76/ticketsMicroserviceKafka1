@@ -9,7 +9,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
-
+/**
+ * маппер для {@link Ticket} готовый DTO {@link TicketDto}
+ */
 @Mapper(componentModel = "spring")
 public interface TicketMapper {
     @Mapping(target = "route.id", source = "route")
