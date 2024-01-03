@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+/** Контроллер билетов  */
 @RequestMapping("/ticket")
 @Slf4j
 @RestController

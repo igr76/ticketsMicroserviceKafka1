@@ -6,14 +6,22 @@ import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * Сервис билетов
+ */
 public interface TicketService {
+    /**   Получить все билеты */
     List<TicketDto> getAllTickets(PageRequest pageRequest);
+    /**   Получить билеты  по выборке*/
     List<TicketDto> getAllTicketsChoose(String date,String arrivalPoint,
                                         String departurePoints,String carrier,int limit,int offset);
+    /**   Получить все свои билеты */
     List<TicketDto> getAllMyTickets();
+    /**   Купить выбранный  билет */
     void buyTicket(long id,String login);
+    /**   Создать билет*/
     TicketDto greatTicket(NewTicketDto newTicketDto);
+    /**   Удалить билет*/
     void deleteTicket(long id);
 
 }

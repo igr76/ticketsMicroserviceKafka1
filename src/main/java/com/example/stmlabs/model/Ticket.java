@@ -18,16 +18,17 @@ public class Ticket {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
    long id;
+    /**  маршрут  */
   @OneToOne
    Route route;
+    /** Дата билета  */
    LocalDate dateTime;
+    /** Номер места  */
    int place;
+    /** Стоимость билета  */
    int cost;
-   @ManyToOne
+    /** Владелец  билета  */
+   @ManyToOne(fetch = FetchType.EAGER)
    User user;
 }
-//{"id": 1,
-//        "dateTime": "20-02-2023 ",
-//        "place": 1,
-//        "cost": 1,
-//        "user": 1}
+

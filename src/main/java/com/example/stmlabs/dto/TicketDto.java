@@ -12,9 +12,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TicketDto {
+     @NonNull
      long id;
+     @NonNull
      long route;
+     @NonNull
      String dateTime;
+     @NonNull
      int place;
      int cost;
      int user;

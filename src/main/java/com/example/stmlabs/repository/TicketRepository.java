@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/** Репозиторий билетов  */
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
     List<Ticket> findAllByUserNull();
