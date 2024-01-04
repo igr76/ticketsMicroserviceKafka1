@@ -3,6 +3,7 @@ package com.example.stmlabs.service;
 import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +17,7 @@ public interface TicketService {
     List<TicketDto> getAllTicketsChoose(String date,String arrivalPoint,
                                         String departurePoints,String carrier,int limit,int offset);
     /**   Получить все свои билеты */
-    List<TicketDto> getAllMyTickets();
+    List<TicketDto> getAllMyTickets( Authentication authentication);
     /**   Купить выбранный  билет */
     void buyTicket(long id,String login);
     /**   Создать билет*/

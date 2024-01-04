@@ -11,6 +11,7 @@ import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -60,8 +61,10 @@ public class TicketServiceImpl implements TicketService {
     }
     /**   Получить все свои билеты */
     @Override
-    public List<TicketDto> getAllMyTickets() {
-        return null;
+    public List<TicketDto> getAllMyTickets( Authentication authentication) {
+        log.info("Service Получить  все свои билеты");
+        User user=userRepository.findByLogin(authentication.getName()).orElseThrow(ElemNotFound::new);
+        return ticketMapper.toListDto(ticketRepository.findAllByUser(user.getId()));
     }
     /**   Купить выбранный  билет */
     @Override
