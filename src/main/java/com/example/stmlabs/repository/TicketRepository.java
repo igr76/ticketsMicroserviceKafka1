@@ -30,4 +30,6 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
             "tickets.user_id IS NULL  LIMIT :limit OFFSET :offset*limit")
     List<Ticket> getAllTicketsChooseNoCarrier(LocalDate date, String arrivalPoint,
                                      String departurePoints, int limit, int offset);
+
+    List<Ticket> findAllByUser(long id);
 }
