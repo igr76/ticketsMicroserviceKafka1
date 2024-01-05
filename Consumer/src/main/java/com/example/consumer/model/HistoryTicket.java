@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "histurytickets")
+@Table(name = "historytickets")
 public class HistoryTicket {
   @Id
    long id;
