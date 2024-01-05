@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
   /**   Проверка на авторство пользователя*/
   public boolean checkAuthor(String login, Authentication authentication) {
-    if (!userRepository.findByLoginIsFalse(login) && login== authentication.getName()) {return  true;
+    if (userRepository.findByLogin(login)!=null && login== authentication.getName()) {return  true;
     }else return false;
   }
 }
