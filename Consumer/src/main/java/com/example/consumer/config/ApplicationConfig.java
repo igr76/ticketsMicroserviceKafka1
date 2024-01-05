@@ -2,7 +2,6 @@ package com.example.consumer.config;
 
 import com.example.consumer.model.HistoryTicket;
 import com.example.consumer.service.TicketHistoryService;
-import com.example.consumer.service.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -10,6 +9,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.boot.ssl.SslBundles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
@@ -28,7 +28,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import java.util.List;
 
 import static org.springframework.kafka.support.serializer.JsonSerializer.TYPE_MAPPINGS;
-
+/** Конфигурации kafka Consumer  */
 @Slf4j
 @Configuration
 public class ApplicationConfig {
@@ -81,14 +81,14 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public KafkaClient stringValueConsumer(TicketService ticketService) {
+    public KafkaClient stringValueConsumer(TicketHistoryService ticketService) {
         return new KafkaClient(ticketService);
     }
 
     public static class KafkaClient {
-        private final TicketService service;
+        private final TicketHistoryService service;
 
-        public KafkaClient(TicketService service) {
+        public KafkaClient(TicketHistoryService service) {
             this.service = service;
         }
 

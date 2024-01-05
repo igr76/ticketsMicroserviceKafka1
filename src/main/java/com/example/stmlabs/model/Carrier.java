@@ -17,7 +17,9 @@ public class Carrier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+    /** Наименование перевозчика  */
   private String name;
+    /** Телефон перевозчика  */
   private String phone;
 
  }

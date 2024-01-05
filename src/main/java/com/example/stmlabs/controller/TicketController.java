@@ -17,11 +17,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+/** Контроллер билетов  */
 @RequestMapping("/ticket")
 @Slf4j
 @RestController
@@ -68,7 +69,7 @@ public class TicketController {
         log.info("controller Получить билет");
         return ResponseEntity.ok(ticketService.getAllTicketsChoose(date,arrivalPoint,departurePoints,carrier,limit,offset));
     }
-    @Operation(summary = "Получить билет")
+    @Operation(summary = "Получить свои билеты")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(
                     array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
@@ -78,9 +79,9 @@ public class TicketController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
     @GetMapping(value = "/allMy")
-    public ResponseEntity<List<TicketDto>> getAllMyTickets() {
-        log.info("controller Получить билет");
-        return ResponseEntity.ok(ticketService.getAllMyTickets());
+    public ResponseEntity<List<TicketDto>> getAllMyTickets( Authentication authentication) {
+        log.info("controller Получить свои билеты");
+        return ResponseEntity.ok(ticketService.getAllMyTickets( authentication));
     }
     @Operation(summary = "Создать билет")
     @ApiResponses({

@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 /**
- * Сервис пользователей
+ * Реализация сервиса пользователей
  */
 //@RequiredArgsConstructor
 @Service
@@ -41,9 +41,7 @@ public class UserServiceImpl implements UserService {
     return userMapper.toDTO(user);
   }
 
-  /**
-   * Обновить данные пользователя
-   */
+  /**   Обновить данные пользователя*/
   @Override
   public UserDto updateUser(UserDto newUserDto, Authentication authentication) {
     log.info("Обновить данные пользователя");
@@ -55,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }else userRepository.save(userMapper.toEntity(newUserDto));
     return newUserDto;
   }
-
+  /**   Удалить пользователя*/
   @Override
   public void deleteUser(String login, Authentication authentication) {
     log.info("Удалить пользователя");
@@ -67,7 +65,7 @@ public class UserServiceImpl implements UserService {
             new ElemNotFound("Такого пользователя не существует"));
     userRepository.delete(user);
   }
-
+  /**   Создать пользователя*/
   @Override
   public UserDto greateUser(UserDto userDto, Authentication authentication) {
     log.info("Создать пользователя");
@@ -79,14 +77,15 @@ public class UserServiceImpl implements UserService {
     }else userRepository.save(userMapper.toEntity(userDto));
     return userDto;
   }
-
+  /**   Получить  пользователя по логину */
   @Override
   public Optional<User> getUserByLogin(String login) {
     return userRepository.findByLogin(login);
   }
 
+  /**   Проверка на авторство пользователя*/
   public boolean checkAuthor(String login, Authentication authentication) {
-    if (!userRepository.findByLoginIsFalse(login) && login== authentication.getName()) {return  true;
+    if (userRepository.findByLogin(login)!=null && login== authentication.getName()) {return  true;
     }else return false;
   }
 }

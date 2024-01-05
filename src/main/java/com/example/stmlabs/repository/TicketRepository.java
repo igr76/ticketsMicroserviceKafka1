@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/** Репозиторий билетов  */
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
     List<Ticket> findAllByUserNull();
@@ -30,4 +30,6 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
             "tickets.user_id IS NULL  LIMIT :limit OFFSET :offset*limit")
     List<Ticket> getAllTicketsChooseNoCarrier(LocalDate date, String arrivalPoint,
                                      String departurePoints, int limit, int offset);
+    @Query(nativeQuery = true, value ="SELECT * FROM tickets WHERE tickets.user_id = :id  ")
+    List<Ticket> findAllByUser(long id);
 }

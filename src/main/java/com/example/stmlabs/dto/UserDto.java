@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-/** Cущность пассажир  */
+/**  Dto пассажир  */
 @Getter
 @Setter
 @AllArgsConstructor

@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+/** Контроллер пассажиров  */
 @RequestMapping("/users")
 @Slf4j
 @RestController
@@ -25,7 +25,7 @@ public class UserController {
   }
 
 
-  @Operation(summary = "Получить пользователя")
+  @Operation(summary = "Получить пассажира")
   @ApiResponses({
           @ApiResponse(responseCode = "200", description = "OK", content = @Content(
                   array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
@@ -38,10 +38,10 @@ public class UserController {
   @GetMapping(value = "/{login}")
   public ResponseEntity<UserDto> getUser(@PathVariable(name = "login")
                                            @NotBlank(message = "ad_pk не должен быть пустым") String login, Authentication authentication) {
-    log.info("controller Получить пользователя");
+    log.info("controller Получить пассажира");
     return ResponseEntity.ok(userService.getUser(login,authentication));
   }
-  @Operation(summary = "Создать пользователя")
+  @Operation(summary = "Создать пассажира")
   @ApiResponses({
           @ApiResponse(responseCode = "200", description = "OK", content = @Content(
                   array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
@@ -53,11 +53,11 @@ public class UserController {
   @PostMapping
   public ResponseEntity<UserDto> greaetUser(
           @RequestBody
-          @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto, Authentication authentication) {
-    log.info("controller создать пользователя");
+          @NotBlank(message = "пассажир не должен быть пустым") UserDto userDto, Authentication authentication) {
+    log.info("controller создать пассажира");
     return ResponseEntity.ok(userService.greateUser(userDto,authentication));
   }
-  @Operation(summary = "Обновить пользователя")
+  @Operation(summary = "Обновить пассажира")
   @ApiResponses({
       @ApiResponse(responseCode = "200", description = "OK", content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
@@ -70,11 +70,11 @@ public class UserController {
   @PatchMapping()
   public ResponseEntity<UserDto> updateUser(
           @RequestBody
-      @NotBlank(message = "пользователь не должен быть пустым") UserDto userDto, Authentication authentication) {
-    log.info("controller Обновить пользователя");
+      @NotBlank(message = "пассажир не должен быть пустым") UserDto userDto, Authentication authentication) {
+    log.info("controller Обновить пассажира");
     return ResponseEntity.ok(userService.updateUser(userDto,authentication));
   }
-    @Operation(summary = "Удалить пользователя")
+    @Operation(summary = "Удалить пассажира")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(
                     array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
@@ -87,7 +87,7 @@ public class UserController {
     @DeleteMapping("/{login}")
     public void deleteUser(@PathVariable(name = "login")
                                @NotBlank(message = "логин не должен быть пустым") String login, Authentication authentication) {
-        log.info("controller Удалить пользователя");
+        log.info("controller Удалить пассажира");
          userService.deleteUser(login,authentication);
     }
 

@@ -17,10 +17,14 @@ public class Route {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+  /** Станция отбытия */
   private String arrivalPoint;
+  /** Станция Прибытия */
   private String departurePoint;
+  /** Наименование перевозчика */
   @OneToOne(fetch = FetchType.EAGER)
   private Carrier carrier;
+  /** Время в пути */
   private int durationInMinutes;
 
 
