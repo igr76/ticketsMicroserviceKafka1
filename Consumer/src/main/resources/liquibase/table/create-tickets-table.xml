@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="create-tickets-table" author="Igor ">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="historytickets"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="historytickets">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="route_id" type="BIGINT">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="date_time" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="place" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

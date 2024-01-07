@@ -9,7 +9,15 @@ import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.TicketRepository;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.TicketService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,11 +31,13 @@ import java.util.List;
  * Реализация сервиса билетов
  */
 @Slf4j
+@Transactional
 @Service
 public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
     private TicketMapper ticketMapper;
     private UserRepository userRepository;
+    @Value("${jwt.secret.access}") String jwtAccessSecret;
 
     public TicketServiceImpl(TicketRepository ticketRepository, TicketMapper ticketMapper) {
         this.ticketRepository = ticketRepository;
@@ -61,18 +71,20 @@ public class TicketServiceImpl implements TicketService {
     }
     /**   Получить все свои билеты */
     @Override
-    public List<TicketDto> getAllMyTickets( Authentication authentication) {
+    @Cacheable(value = "getAllMyTickets", key = "#login")
+    public List<TicketDto> getAllMyTickets(String token, String login) {
         log.info("Service Получить  все свои билеты");
-        User user=userRepository.findByLogin(authentication.getName()).orElseThrow(ElemNotFound::new);
-        return ticketMapper.toListDto(ticketRepository.findAllByUser(user.getId()));
+        return ticketMapper.toListDto(ticketRepository.findAllByUser(getUserIdFromToken(token)));
     }
     /**   Купить выбранный  билет */
     @Override
-    public void buyTicket(long id,String login) {
+    @CachePut(value = "getAllMyTickets", key = "#login")
+    public List<TicketDto> buyTicket(long id,String login) {
         Ticket ticket=ticketRepository.findById(id).orElseThrow(ElemNotFound::new);
         User user=userRepository.findByLogin(login).orElseThrow(ElemNotFound::new);
         ticket.setUser(user);
         ticketRepository.save(ticket);
+        return ticketMapper.toListDto(ticketRepository.findAllByUser(user.getId()));
     }
     /**   Создать билет*/
     @Override
@@ -83,5 +95,13 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void deleteTicket(long id) {
         ticketRepository.delete(ticketRepository.findById(id).orElseThrow(ElemNotFound::new));
+    }
+
+    public long getUserIdFromToken(String token) {
+        Jws<Claims> jwsClaims = Jwts.parserBuilder()
+                .setSigningKey(jwtAccessSecret)
+                .build()
+                .parseClaimsJws(token);
+        return jwsClaims.getBody().get("id",Long.class);
     }
 }

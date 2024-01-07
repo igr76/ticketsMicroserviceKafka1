@@ -8,6 +8,7 @@ import com.example.stmlabs.mapper.UserMapper;
 import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,9 @@ import java.util.Optional;
  * Реализация сервиса пользователей
  */
 //@RequiredArgsConstructor
-@Service
 @Slf4j
+@Transactional
+@Service
 public class UserServiceImpl implements UserService {
   private  UserRepository userRepository;
   private  UserMapper userMapper;
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto getUser(String login, Authentication authentication) {
     log.info("Получить данные пользователя" );
-    if (!checkAuthor(login, authentication)) {
+    if (login!= authentication.getName()) {
        throw new AuthException("Вы не можете получать чужую запись");
     }
     User user= new User();
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto updateUser(UserDto newUserDto, Authentication authentication) {
     log.info("Обновить данные пользователя");
-    if (!checkAuthor(newUserDto.getLogin(), authentication)) {
+    if (newUserDto.getLogin()!= authentication.getName()) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
     if (userRepository.findByLogin(newUserDto.getLogin()).isEmpty()) {
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(String login, Authentication authentication) {
     log.info("Удалить пользователя");
-    if (!checkAuthor(login, authentication)) {
+    if (login != authentication.getName()) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
     User user= new User();
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto greateUser(UserDto userDto, Authentication authentication) {
     log.info("Создать пользователя");
-    if (!checkAuthor(userDto.getLogin(), authentication)) {
+    if (userDto.getLogin() != authentication.getName()) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
     if (!userRepository.findByLogin(userDto.getLogin()).isEmpty()) {
@@ -83,9 +85,5 @@ public class UserServiceImpl implements UserService {
     return userRepository.findByLogin(login);
   }
 
-  /**   Проверка на авторство пользователя*/
-  public boolean checkAuthor(String login, Authentication authentication) {
-    if (!userRepository.findByLoginIsFalse(login) && login== authentication.getName()) {return  true;
-    }else return false;
-  }
+
 }
