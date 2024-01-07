@@ -32,4 +32,5 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
                                      String departurePoints, int limit, int offset);
     @Query(nativeQuery = true, value ="SELECT * FROM tickets WHERE tickets.user_id = :id  ")
     List<Ticket> findAllByUser(long id);
+
 }

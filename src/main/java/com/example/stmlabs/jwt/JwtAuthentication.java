@@ -1,11 +1,13 @@
 package com.example.stmlabs.jwt;
 import com.example.stmlabs.dto.Role;
+import com.example.stmlabs.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
@@ -18,6 +20,7 @@ public class JwtAuthentication implements Authentication {
     private boolean authenticated;
     private String userName;
     private String email;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,7 +35,7 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return userName; // Возвращаем объект с userId;
+        return userName;
     }
 
     @Override
