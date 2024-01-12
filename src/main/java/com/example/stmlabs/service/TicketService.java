@@ -17,9 +17,9 @@ public interface TicketService {
     List<TicketDto> getAllTicketsChoose(String date,String arrivalPoint,
                                         String departurePoints,String carrier,int limit,int offset);
     /**   Получить все свои билеты */
-    List<TicketDto> getAllMyTickets( Authentication authentication);
+    List<TicketDto> getAllMyTickets(String token, String login);
     /**   Купить выбранный  билет */
-    void buyTicket(long id,String login);
+    List<TicketDto> buyTicket(long id,String login);
     /**   Создать билет*/
     TicketDto greatTicket(NewTicketDto newTicketDto);
     /**   Удалить билет*/

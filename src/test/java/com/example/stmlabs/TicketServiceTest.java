@@ -4,7 +4,9 @@ import com.example.stmlabs.dto.NewTicketDto;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.mapper.TicketMapper;
 import com.example.stmlabs.model.Ticket;
+import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.TicketRepository;
+import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.impl.TicketServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,11 +31,13 @@ public class TicketServiceTest {
     private TicketRepository ticketRepository;
     @Mock
     private TicketMapper ticketMapper;
+    @Mock
+    private UserRepository userRepository;
     @InjectMocks
     private TicketServiceImpl ticketService =new TicketServiceImpl(ticketRepository,ticketMapper);
 
     @Test
-    void getAllTickets() {
+    void getAllTicketsTest() {
         int offset=1;int limit=1;
         List<TicketDto> ticketDtoList = new ArrayList<>();
         ticketDtoList.add(getTicketDto());
@@ -46,9 +50,20 @@ public class TicketServiceTest {
 
     }
     @Test
-    void getAllMyTickets() {
-
+    void  buyTicketTest() {
+        Ticket ticket=getTicket();User user = new User();user.setId(1L);
+        List<TicketDto> ticketDtoList = new ArrayList<>();
+        ticketDtoList.add(getTicketDto());
+        List<Ticket> ticketList=new ArrayList<>();
+        ticketList.add(getTicket());
+        when(ticketRepository.findById(any())).thenReturn(Optional.ofNullable(ticket));
+        when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
+        when(ticketMapper.toListDto(any())).thenReturn(ticketDtoList);
+        assertThat(ticketService.buyTicket(1,"user1")).isEqualTo(ticketDtoList);
+        verify(ticketRepository, times(1)).save(any());
     }
+
+
 
     @Test
     void greatTicket() {

@@ -41,7 +41,8 @@ public class JwtProvider {
         final Date accessExpiration = Date.from(accessExpirationInstant);
 
         return Jwts.builder()
-                .setSubject(String.valueOf(user.getName()))
+                .setSubject(String.valueOf(user.getLogin()))
+                .claim("id",user.getId())
                 .setExpiration(accessExpiration)
                 .signWith(jwtAccessSecret)
                 .compact();
@@ -54,7 +55,8 @@ public class JwtProvider {
         final Date refreshExpiration = Date.from(refreshExpirationInstant);
 
         return Jwts.builder()
-                .setSubject(String.valueOf(user.getName()))
+                .setSubject(String.valueOf(user.getLogin()))
+                .claim("id",user.getId())
                 .setExpiration(refreshExpiration)
                 .signWith(jwtRefreshSecret)
                 .compact();

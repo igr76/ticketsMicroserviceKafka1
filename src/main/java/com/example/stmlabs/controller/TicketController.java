@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -72,16 +73,34 @@ public class TicketController {
     @Operation(summary = "Получить свои билеты")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-                    array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = TicketDto.class)))),
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
     @GetMapping(value = "/allMy")
-    public ResponseEntity<List<TicketDto>> getAllMyTickets( Authentication authentication) {
+    public ResponseEntity<List<TicketDto>> getAllMyTickets(HttpServletRequest request, Authentication authentication) {
         log.info("controller Получить свои билеты");
-        return ResponseEntity.ok(ticketService.getAllMyTickets( authentication));
+        String token = request.getHeader("Authorization");
+        return ResponseEntity.ok(ticketService.getAllMyTickets(token, authentication.getName()));
+    }
+    @Operation(summary = "Создать билет")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                    array = @ArraySchema(schema = @Schema(implementation = TicketDto.class)))),
+            @ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
+    })
+    @PostMapping(value = "buy")
+    public ResponseEntity<List<TicketDto>> buyTicket(@RequestParam(name = "id",required = false)
+                                                           @NotBlank(message = "id не должен быть пустым")long id,
+                                                           @RequestParam(name = "arrivalPoint",required = false)
+                                                           @NotBlank(message = "login не должен быть пустым") String login) {
+        log.info("controller создать билет");
+        return ResponseEntity.ok(ticketService.buyTicket(id,login));
     }
     @Operation(summary = "Создать билет")
     @ApiResponses({
