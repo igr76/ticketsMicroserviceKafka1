@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public UserDto getUser(String login, Authentication authentication) {
-    log.info("Получить данные пользователя" );
+    log.debug("Получить данные пользователя" );
     if (login!= authentication.getName()) {
        throw new AuthException("Вы не можете получать чужую запись");
     }
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
   /**   Обновить данные пользователя*/
   @Override
   public UserDto updateUser(UserDto newUserDto, Authentication authentication) {
-    log.info("Обновить данные пользователя");
+    log.debug("Обновить данные пользователя");
     if (newUserDto.getLogin()!= authentication.getName()) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
   /**   Удалить пользователя*/
   @Override
   public void deleteUser(String login, Authentication authentication) {
-    log.info("Удалить пользователя");
+    log.debug("Удалить пользователя");
     if (login != authentication.getName()) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
   /**   Создать пользователя*/
   @Override
   public UserDto greateUser(UserDto userDto, Authentication authentication) {
-    log.info("Создать пользователя");
+    log.debug("Создать пользователя");
     if (userDto.getLogin() != authentication.getName()) {
       throw new AuthException("Вы не можете менять чужую запись");
     }

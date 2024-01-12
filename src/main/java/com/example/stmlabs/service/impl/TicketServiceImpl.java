@@ -46,7 +46,7 @@ public class TicketServiceImpl implements TicketService {
     /**   Получить все билеты */
     @Override
     public List<TicketDto> getAllTickets(PageRequest pageRequest) {
-        log.info("Service Получить  все билеты");
+        log.debug("Service Получить  все билеты");
         return ticketMapper.toListDto(ticketRepository.findAllByUserNull());
     }
     /**   Получить билеты  по выборке*/
@@ -73,7 +73,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Cacheable(value = "getAllMyTickets", key = "#login")
     public List<TicketDto> getAllMyTickets(String token, String login) {
-        log.info("Service Получить  все свои билеты");
+        log.debug("Service Получить  все свои билеты");
         return ticketMapper.toListDto(ticketRepository.findAllByUser(getUserIdFromToken(token)));
     }
     /**   Купить выбранный  билет */
