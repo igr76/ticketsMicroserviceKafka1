@@ -1,6 +1,7 @@
 package com.example.stmlabs.service.impl;
 
 import com.example.stmlabs.dto.NewTicketDto;
+import com.example.stmlabs.dto.Role;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.exception.ElemNotFound;
 import com.example.stmlabs.mapper.TicketMapper;
@@ -46,7 +47,7 @@ public class TicketServiceImpl implements TicketService {
     /**   Получить все билеты */
     @Override
     public List<TicketDto> getAllTickets(PageRequest pageRequest) {
-        log.info("Service Получить  все билеты");
+        log.debug("Service Получить  все билеты");
         return ticketMapper.toListDto(ticketRepository.findAllByUserNull());
     }
     /**   Получить билеты  по выборке*/
@@ -73,15 +74,15 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Cacheable(value = "getAllMyTickets", key = "#login")
     public List<TicketDto> getAllMyTickets(String token, String login) {
-        log.info("Service Получить  все свои билеты");
+        log.debug("Service Получить  все свои билеты");
         return ticketMapper.toListDto(ticketRepository.findAllByUser(getUserIdFromToken(token)));
     }
     /**   Купить выбранный  билет */
     @Override
     @CachePut(value = "getAllMyTickets", key = "#login")
-    public List<TicketDto> buyTicket(long id,String login) {
+    public List<TicketDto> buyTicket(long id,Authentication authentication) {
         Ticket ticket=ticketRepository.findById(id).orElseThrow(ElemNotFound::new);
-        User user=userRepository.findByLogin(login).orElseThrow(ElemNotFound::new);
+        User user=userRepository.findByLogin(authentication.getName()).orElseThrow(ElemNotFound::new);
         ticket.setUser(user);
         ticketRepository.save(ticket);
         return ticketMapper.toListDto(ticketRepository.findAllByUser(user.getId()));
@@ -104,4 +105,5 @@ public class TicketServiceImpl implements TicketService {
                 .parseClaimsJws(token);
         return jwsClaims.getBody().get("id",Long.class);
     }
+
 }

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +35,11 @@ public class UserController {
           @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
           @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
   })
-  //@PreAuthorize("hasAuthority('ADMIN')"+"|| 'user.login'")
   @GetMapping(value = "/{login}")
   public ResponseEntity<UserDto> getUser(@PathVariable(name = "login")
                                            @NotBlank(message = "ad_pk не должен быть пустым") String login, Authentication authentication) {
-    log.info("controller Получить пассажира");
-    return ResponseEntity.ok(userService.getUser(login,authentication));
+    log.debug("controller Получить пассажира");
+    return ResponseEntity.ok(userService.getUser(login,authentication) );
   }
   @Operation(summary = "Создать пассажира")
   @ApiResponses({
@@ -54,7 +54,7 @@ public class UserController {
   public ResponseEntity<UserDto> greaetUser(
           @RequestBody
           @NotBlank(message = "пассажир не должен быть пустым") UserDto userDto, Authentication authentication) {
-    log.info("controller создать пассажира");
+    log.debug("controller создать пассажира");
     return ResponseEntity.ok(userService.greateUser(userDto,authentication));
   }
   @Operation(summary = "Обновить пассажира")
@@ -66,12 +66,11 @@ public class UserController {
       @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
       @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
   })
-  //@PreAuthorize("userDto.login == authentication.principal.username")
   @PatchMapping()
   public ResponseEntity<UserDto> updateUser(
           @RequestBody
       @NotBlank(message = "пассажир не должен быть пустым") UserDto userDto, Authentication authentication) {
-    log.info("controller Обновить пассажира");
+    log.debug("controller Обновить пассажира");
     return ResponseEntity.ok(userService.updateUser(userDto,authentication));
   }
     @Operation(summary = "Удалить пассажира")
@@ -83,11 +82,10 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
-    //@PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{login}")
     public void deleteUser(@PathVariable(name = "login")
                                @NotBlank(message = "логин не должен быть пустым") String login, Authentication authentication) {
-        log.info("controller Удалить пассажира");
+        log.debug("controller Удалить пассажира");
          userService.deleteUser(login,authentication);
     }
 

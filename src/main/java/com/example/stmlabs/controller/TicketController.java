@@ -18,6 +18,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class TicketController {
     @GetMapping(value = "/all")
     public ResponseEntity<List<TicketDto>> getAllTickets(@RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
                                                          @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) Integer limit) {
-        log.info("controller Получить все  билет");
+        log.debug("controller Получить все  билет");
         return ResponseEntity.ok(ticketService.getAllTickets(PageRequest.of(offset,limit)));
     }
     @Operation(summary = "Получить билет")
@@ -67,7 +68,7 @@ public class TicketController {
                                                                @RequestParam(name = "carrier",required = false) String carrier,
                                                                @RequestParam(name = "offset", defaultValue = "0") @Min(0) Integer offset,
                                                                @RequestParam(name = "limit", defaultValue = "20") @Min(1) @Max(100) Integer limit) {
-        log.info("controller Получить билет");
+        log.debug("controller Получить билет");
         return ResponseEntity.ok(ticketService.getAllTicketsChoose(date,arrivalPoint,departurePoints,carrier,limit,offset));
     }
     @Operation(summary = "Получить свои билеты")
@@ -97,10 +98,9 @@ public class TicketController {
     @PostMapping(value = "buy")
     public ResponseEntity<List<TicketDto>> buyTicket(@RequestParam(name = "id",required = false)
                                                            @NotBlank(message = "id не должен быть пустым")long id,
-                                                           @RequestParam(name = "arrivalPoint",required = false)
-                                                           @NotBlank(message = "login не должен быть пустым") String login) {
-        log.info("controller создать билет");
-        return ResponseEntity.ok(ticketService.buyTicket(id,login));
+                                                       Authentication authentication) {
+        log.debug("controller создать билет");
+        return ResponseEntity.ok(ticketService.buyTicket(id,authentication));
     }
     @Operation(summary = "Создать билет")
     @ApiResponses({
@@ -111,11 +111,12 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<TicketDto> greatTicket(
             @RequestBody
             @NotBlank(message = "пользователь не должен быть пустым") NewTicketDto newTicketDto/*, Authentication authentication*/) {
-        log.info("controller создать билет");
+        log.debug("controller создать билет");
         return ResponseEntity.ok(ticketService.greatTicket(newTicketDto));
     }
     @Operation(summary = "Удалить билет")
@@ -127,10 +128,11 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteTicket(  @RequestBody
                                    @NotBlank(message = "пользователь не должен быть пустым")long id/*, Authentication authentication*/) {
-        log.info("controller Удалить билет");
+        log.debug("controller Удалить билет");
         ticketService.deleteTicket(id);
     }
 }

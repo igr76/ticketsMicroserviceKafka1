@@ -27,7 +27,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     public JwtResponse login(@NonNull JwtRequest authRequest) {
-        log.info("Service Получить token");
+        log.debug("Service Получить token");
         final User user = userService.getUserByLogin(authRequest.getLogin())
                 .orElseThrow(() -> new ElemNotFound("Пользователь не найден"));
         if (user.getPasswordHash().equals(authRequest.getPassword())) {

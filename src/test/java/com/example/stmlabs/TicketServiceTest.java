@@ -1,6 +1,7 @@
 package com.example.stmlabs;
 
 import com.example.stmlabs.dto.NewTicketDto;
+import com.example.stmlabs.dto.Role;
 import com.example.stmlabs.dto.TicketDto;
 import com.example.stmlabs.mapper.TicketMapper;
 import com.example.stmlabs.model.Ticket;
@@ -14,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,10 +59,12 @@ public class TicketServiceTest {
         ticketDtoList.add(getTicketDto());
         List<Ticket> ticketList=new ArrayList<>();
         ticketList.add(getTicket());
+        Authentication authentication = new TestingAuthenticationToken("user1", "222", String.valueOf(Role.ADMIN));
+        authentication.setAuthenticated(true);
         when(ticketRepository.findById(any())).thenReturn(Optional.ofNullable(ticket));
         when(userRepository.findByLogin(any())).thenReturn(Optional.ofNullable(user));
         when(ticketMapper.toListDto(any())).thenReturn(ticketDtoList);
-        assertThat(ticketService.buyTicket(1,"user1")).isEqualTo(ticketDtoList);
+        assertThat(ticketService.buyTicket(1,authentication)).isEqualTo(ticketDtoList);
         verify(ticketRepository, times(1)).save(any());
     }
 

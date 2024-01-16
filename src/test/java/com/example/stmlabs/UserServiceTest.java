@@ -111,13 +111,13 @@ public class UserServiceTest {
 
     User getUser() {
         User user =new User(1,"login","1111",
-                "name1","surname","patronymicName");
+                "name1","surname","patronymicName",Role.ADMIN);
         return user;
     }
 
     UserDto getUserDto() {
         UserDto userDto = new UserDto("login","1111",
-                "name1","surname","patronymicName");
+                "name1","surname","patronymicName",Role.ADMIN);
         return userDto;
     }
 }
