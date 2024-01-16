@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +35,11 @@ public class UserController {
           @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
           @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
   })
-  //@PreAuthorize("hasAuthority('ADMIN')"+"|| 'user.login'")
   @GetMapping(value = "/{login}")
   public ResponseEntity<UserDto> getUser(@PathVariable(name = "login")
                                            @NotBlank(message = "ad_pk не должен быть пустым") String login, Authentication authentication) {
     log.debug("controller Получить пассажира");
-    return ResponseEntity.ok(userService.getUser(login,authentication));
+    return ResponseEntity.ok(userService.getUser(login,authentication) );
   }
   @Operation(summary = "Создать пассажира")
   @ApiResponses({
@@ -66,7 +66,6 @@ public class UserController {
       @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
       @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
   })
-  //@PreAuthorize("userDto.login == authentication.principal.username")
   @PatchMapping()
   public ResponseEntity<UserDto> updateUser(
           @RequestBody
@@ -83,7 +82,6 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
-    //@PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{login}")
     public void deleteUser(@PathVariable(name = "login")
                                @NotBlank(message = "логин не должен быть пустым") String login, Authentication authentication) {

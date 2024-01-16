@@ -18,6 +18,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,10 +98,9 @@ public class TicketController {
     @PostMapping(value = "buy")
     public ResponseEntity<List<TicketDto>> buyTicket(@RequestParam(name = "id",required = false)
                                                            @NotBlank(message = "id не должен быть пустым")long id,
-                                                           @RequestParam(name = "arrivalPoint",required = false)
-                                                           @NotBlank(message = "login не должен быть пустым") String login) {
+                                                       Authentication authentication) {
         log.debug("controller создать билет");
-        return ResponseEntity.ok(ticketService.buyTicket(id,login));
+        return ResponseEntity.ok(ticketService.buyTicket(id,authentication));
     }
     @Operation(summary = "Создать билет")
     @ApiResponses({
@@ -111,6 +111,7 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<TicketDto> greatTicket(
             @RequestBody
@@ -127,6 +128,7 @@ public class TicketController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema()))
     })
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteTicket(  @RequestBody
                                    @NotBlank(message = "пользователь не должен быть пустым")long id/*, Authentication authentication*/) {

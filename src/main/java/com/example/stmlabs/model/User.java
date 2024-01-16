@@ -1,6 +1,7 @@
 package com.example.stmlabs.model;
 
 
+import com.example.stmlabs.dto.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public class User {
   private String surname;
   /** Отчество пассажира  */
   private String patronymicName;
+  /** Роль пассажира  */
+  private Role role;
 }
 //{"login": "user1",
 //        "passwordHash": "user1",

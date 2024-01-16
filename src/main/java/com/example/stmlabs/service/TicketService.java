@@ -19,7 +19,7 @@ public interface TicketService {
     /**   Получить все свои билеты */
     List<TicketDto> getAllMyTickets(String token, String login);
     /**   Купить выбранный  билет */
-    List<TicketDto> buyTicket(long id,String login);
+    List<TicketDto> buyTicket(long id,Authentication authentication);
     /**   Создать билет*/
     TicketDto greatTicket(NewTicketDto newTicketDto);
     /**   Удалить билет*/

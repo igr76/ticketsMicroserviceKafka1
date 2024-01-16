@@ -1,6 +1,7 @@
 package com.example.stmlabs.service.impl;
 
 
+import com.example.stmlabs.dto.Role;
 import com.example.stmlabs.dto.UserDto;
 import com.example.stmlabs.exception.AuthException;
 import com.example.stmlabs.exception.ElemNotFound;
@@ -8,8 +9,12 @@ import com.example.stmlabs.mapper.UserMapper;
 import com.example.stmlabs.model.User;
 import com.example.stmlabs.repository.UserRepository;
 import com.example.stmlabs.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -23,6 +28,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
   private  UserRepository userRepository;
   private  UserMapper userMapper;
+  @Value("${jwt.secret.access}") String jwtAccessSecret;
   public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
     this.userRepository = userRepository;
     this.userMapper = userMapper;
@@ -34,7 +40,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto getUser(String login, Authentication authentication) {
     log.debug("Получить данные пользователя" );
-    if (login!= authentication.getName()) {
+    if (login.equals(authentication.getName()) || !(authentication.getAuthorities().contains(Role.ADMIN))) {
        throw new AuthException("Вы не можете получать чужую запись");
     }
     User user= new User();
@@ -47,7 +53,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto updateUser(UserDto newUserDto, Authentication authentication) {
     log.debug("Обновить данные пользователя");
-    if (newUserDto.getLogin()!= authentication.getName()) {
+    if (newUserDto.getLogin().equals(authentication.getName()) || !(authentication.getAuthorities().contains(Role.ADMIN))) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
     if (userRepository.findByLogin(newUserDto.getLogin()).isEmpty()) {
@@ -59,7 +65,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(String login, Authentication authentication) {
     log.debug("Удалить пользователя");
-    if (login != authentication.getName()) {
+    if (login.equals(authentication.getName()) || !(authentication.getAuthorities().contains(Role.ADMIN))) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
     User user= new User();
@@ -71,7 +77,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto greateUser(UserDto userDto, Authentication authentication) {
     log.debug("Создать пользователя");
-    if (userDto.getLogin() != authentication.getName()) {
+    if (userDto.getLogin().equals(authentication.getName()) || !(authentication.getAuthorities().contains(Role.ADMIN))) {
       throw new AuthException("Вы не можете менять чужую запись");
     }
     if (!userRepository.findByLogin(userDto.getLogin()).isEmpty()) {
