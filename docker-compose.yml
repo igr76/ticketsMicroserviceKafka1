@@ -12,10 +12,20 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_DB=g
-      - POSTGRES_USER=test
-      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=igr
+      - POSTGRES_PASSWORD=11111111
     volumes:
       - /var/lib/postgresql/data
+
+  postgres1:
+    image: "postgres:14.4"
+    hostname: postgres1
+    ports:
+      - "5433:5433"
+    environment:
+      - POSTGRES_DB=f
+      - POSTGRES_USER=igr
+      - POSTGRES_PASSWORD=11111111
 
   rest-api:
     hostname: rest-api
@@ -27,7 +37,20 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/g
     depends_on:
       - postgres
-      -
+
+
+  history-api:
+    hostname: history-api
+    build:
+      context: .
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5433/history
+    depends_on:
+      - postgres1
+
+
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
     container_name: zookeeper
