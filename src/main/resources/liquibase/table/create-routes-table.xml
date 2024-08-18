@@ -24,7 +24,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="carrier_id" type="BIGINT">
-                <constraints nullable="false"/>
+
             </column>
             <column name="duration_in_minutes" type="INT">
                 <constraints nullable="false"/>
